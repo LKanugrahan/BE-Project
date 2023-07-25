@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "14e6d277-adb7-4e79-941c-c0816e4c56a5",
+		"name": "Recipe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27673375"
+	},
+	"item": [
+		{
+			"name": "RECIPE",
+			"item": [
+				{
+					"name": "GET RECIPE",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/recipe/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RECIPE DETAIL",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/recipe/13",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET RECIPE SEARCH SORT PAGINATION",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/recipe/detail?search=&searchBy=&sort=asc&page=5&limit=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "searchBy",
+									"value": ""
+								},
+								{
+									"key": "sort",
+									"value": "asc"
+								},
+								{
+									"key": "page",
+									"value": "5"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "order",
+									"value": "recipe.id",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST RECIPE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "recipe_name",
+									"value": "ayam goreng",
+									"type": "text"
+								},
+								{
+									"key": "recipe_desc",
+									"value": "ayam digoreng",
+									"type": "text"
+								},
+								{
+									"key": "recipe_ingredients",
+									"value": "ayam",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/recipe/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE RECIPE DETAIL",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "recipe_name",
+									"value": "ubi goreng",
+									"type": "text"
+								},
+								{
+									"key": "recipe_desc",
+									"value": "tempe digoreng",
+									"type": "text"
+								},
+								{
+									"key": "recipe_ingredients",
+									"value": "tempe",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/recipe/13",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE RECIPE DETAIL",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "z",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/recipe/13",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CATEGORY",
+			"item": [
+				{
+					"name": "GET CATEGORY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET CATEGORY DETAIL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/category/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "GET USERS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST USER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "agus",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "agus@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "08211234567",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "dasdqwedsad",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE USER",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "bagas",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "agus@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "08211234567",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qseawd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/users/12",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE USER",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/12",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

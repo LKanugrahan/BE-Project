@@ -1,0 +1,26 @@
+{
+  "name": "tugas-be-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LKanugrahan/Kumpulan-Tugas-Bootcamp.git#main"
+  },
+  "author": "Langgeng Kanugrahan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LKanugrahan/Kumpulan-Tugas-Bootcamp/issues"
+  },
+  "homepage": "https://github.com/LKanugrahan/Kumpulan-Tugas-Bootcamp/tree/main#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.1"
+  }
+}
