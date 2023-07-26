@@ -1,13 +1,14 @@
 const { getData, getDataById,getDataSearch,deleteDataById, postData, putData } = require('../controller/recipeController');
 const app = require("express");
 const router = app.Router();
+const {Protect} = require('./../middleware/protect')
 
 router.get('/', getData);
 router.get('/detail', getDataSearch);
-router.post('/', postData);
-router.put('/:id', putData);
+router.post('/',Protect, postData);
+router.put('/:id',Protect, putData);
 router.get('/:id', getDataById);
-router.delete('/:id', deleteDataById);
+router.delete('/:id', Protect, deleteDataById);
 
 module.exports = router;
 

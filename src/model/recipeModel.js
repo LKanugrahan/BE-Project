@@ -28,12 +28,12 @@ const getRecipeSearchSortPagination = async (data) => {
 
 
 const postRecipe = async (data) => {
-    const { recipe_name, recipe_desc, recipe_ingredients, category_id } = data;
+    const { recipe_name, recipe_desc, recipe_ingredients, category_id, users_id } = data;
     console.log(data);
     console.log("model postRecipe");
     return new Promise((resolve, reject) =>
       pg.query(
-        `INSERT INTO recipe (recipe_name, recipe_desc, recipe_ingredients, category_id) VALUES('${recipe_name}','${recipe_desc}','${recipe_ingredients}', '${category_id}')`,
+        `INSERT INTO recipe (recipe_name, recipe_desc, recipe_ingredients, category_id, users_id, recipe_image) VALUES('${recipe_name}','${recipe_desc}','${recipe_ingredients}', '${category_id}', '${users_id}', 'gambar_guest')`,
         (err, result) => {
           if (err) {
             reject(err);
@@ -67,7 +67,7 @@ const putRecipe = async (id, data) => {
 
 const getRecipeById = (id) => {
   return new Promise((resolve, reject) => {
-    pg.query(`SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, food_category.*, users.name AS writer, users.email, users.phone_number, users.password  FROM recipe JOIN food_category ON recipe.category_id = food_category.id JOIN users ON recipe.users_id = users.id WHERE recipe.id=${id}`, (err, result) => {
+    pg.query(`SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, food_category.*, users.name AS writer, users.email, users.password  FROM recipe JOIN food_category ON recipe.category_id = food_category.id JOIN users ON recipe.users_id = users.id WHERE recipe.id=${id}`, (err, result) => {
       if (err) {
         reject(err);
       } else {

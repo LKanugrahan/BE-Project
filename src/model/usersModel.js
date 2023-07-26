@@ -15,12 +15,12 @@ const getUsers = () => {
 
 
 const postUsers = async (data) => {
-    const { name, email, phone_number, password } = data;
+    const { name, email, password } = data;
     console.log(data);
     console.log("model postUsers");
     return new Promise((resolve, reject) =>
       pg.query(
-        `INSERT INTO users (name, email, phone_number, password) VALUES('${name}','${email}','${phone_number}', '${password}')`,
+        `INSERT INTO users (name, email, password) VALUES('${name}','${email}', '${password}')`,
         (err, result) => {
           if (err) {
             reject(err);
@@ -34,11 +34,11 @@ const postUsers = async (data) => {
   
 
 const putUsers = async (id, data) => {
-    const { name, email, phone_number, password } = data;
+    const { name, email, password } = data;
     console.log("model putUsers");
     return new Promise((resolve, reject) =>
       pg.query(
-        `UPDATE users SET name='${name}', email='${email}', phone_number='${phone_number}', password='${password}'WHERE id=${id}`,
+        `UPDATE users SET name='${name}', email='${email}', password='${password}'WHERE id=${id}`,
         (err, result) => {
           if (err) {
             reject(err);

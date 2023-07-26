@@ -71,6 +71,16 @@ const recipeController = {
     if (isNaN(id) || id < 0 || !id) {
       return res.status(404).json({ message: "id wrong" });
     }
+    let dataRecipeId = await getRecipeById(parseInt(id));
+
+    let users_id = req.payload.id;
+
+    console.log("id data");
+    console.log(users_id);
+    console.log(dataRecipeId.rows[0].users_id);
+    if (users_id != dataRecipeId.rows[0].users_id) {
+      return res.status(404).json({ message: "recipe bukan milik anda" });
+    }
 
     let deleteRecipeId = await deleteRecipeById(parseInt(id));
     console.log("deleteRecipeId");
@@ -89,6 +99,10 @@ const recipeController = {
     console.log("post data ");
     console.log(recipe_name, recipe_desc, recipe_ingredients, category_id);
 
+    let users_id = req.payload.id;
+    console.log("payload");
+    console.log(req.payload);
+
     if (!recipe_name || !recipe_desc || !recipe_ingredients) {
       return res.status(404).json({
         message: "input recipe_name, recipe_desc, recipe_ingredients required",
@@ -100,6 +114,7 @@ const recipeController = {
       recipe_desc: recipe_desc,
       recipe_ingredients: recipe_ingredients,
       category_id: category_id,
+      users_id,
     };
 
     console.log("data");
@@ -119,29 +134,38 @@ const recipeController = {
 
   putData: async (req, res, next) => {
     const { id } = req.params;
-    const { recipe_name, recipe_desc, recipe_ingredients } = req.body;
-
+    const { recipe_name, recipe_desc, recipe_ingredients, category_id } =
+      req.body;
     if (!id || id <= 0 || isNaN(id)) {
       return res.status(404).json({ message: "id wrong" });
     }
 
-    let data = {
-      recipe_name: recipe_name,
-      recipe_desc: recipe_desc,
-      recipe_ingredients: recipe_ingredients,
-    };
+    let dataRecipeId = await getRecipeById(parseInt(id));
 
-    try {
-      let result = await putRecipe(parseInt(id), data); // Menggunakan putRecipe untuk update
-      console.log(result);
+    let users_id = req.payload.id;
 
-      // delete data.id;
-      return res
-        .status(200)
-        .json({ status: 200, message: "update data recipe success", data });
-    } catch (error) {
-      return res.status(500).json({ message: "Internal Server Error" });
+    console.log("id data");
+    console.log(users_id);
+    console.log(dataRecipeId.rows[0].users_id);
+    if (users_id != dataRecipeId.rows[0].users_id) {
+      return res.status(404).json({ message: "recipe bukan milik anda" });
     }
+
+    console.log("put data");
+    console.log(dataRecipeId.rows[0]);
+    let data = {
+      recipe_name: recipe_name || dataRecipeId.rows[0].recipe_name,
+      recipe_desc: recipe_desc || dataRecipeId.rows[0].recipe_desc,
+      recipe_ingredients:
+        recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
+      category_id: parseInt(category_id) || dataRecipeId.rows[0].category_id,
+    };
+    let result = putRecipe(data, id);
+    console.log(result);
+    delete data.id;
+    return res
+      .status(200)
+      .json({ status: 200, message: "update data recipe success", data });
   },
 };
 

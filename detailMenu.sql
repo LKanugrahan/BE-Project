@@ -1,4 +1,4 @@
--- Active: 1689688312838@@localhost@5432@tugas_be_api
+-- Active: 1690239807961@@147.139.210.135@5432@langgeng01
 
 CREATE TABLE recipe (id SERIAL PRIMARY KEY);
 
@@ -329,3 +329,7 @@ ALTER COLUMN phone_number
 SET NOT NULL,
 ALTER COLUMN password
 SET NOT NULL;
+
+UPDATE users SET password = '$argon2id$v=19$m=65536,t=3,p=4$JJtWcUpzQQohhqGPl7QYXw$xdFFzP/Fd0DkGz6gucXGAzJ1n6drG+kUzyd1xFb7z2E' WHERE id = 1;
+
+ALTER TABLE users DROP COLUMN photo, DROP COLUMN phone_number;
