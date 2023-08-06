@@ -86,7 +86,6 @@ const recipeController = {
       recipe_desc,
       recipe_ingredients,
       category_id,
-      users_id,
       recipe_image,
     } = req.body;
 
@@ -98,13 +97,12 @@ const recipeController = {
       recipe_desc,
       recipe_ingredients,
       category_id,
-      users_id,
       recipe_image
     );
 
-    // let users_id = req.payload.id;
-    // console.log("payload");
-    // console.log(req.payload);
+    let users_id = req.payload.id;
+    console.log("payload");
+    console.log(req.payload);
 
     if (
       !recipe_name ||
@@ -156,14 +154,14 @@ const recipeController = {
 
     let dataRecipeId = await getRecipeById(parseInt(id));
 
-    // let users_id = req.payload.id;
+    let users_id = req.payload.id;
 
-    // console.log("id data");
-    // console.log(users_id);
-    // console.log(dataRecipeId.rows[0].users_id);
-    // if (users_id != dataRecipeId.rows[0].users_id) {
-    //   return res.status(404).json({ message: "recipe bukan milik anda" });
-    // }
+    console.log("id data");
+    console.log(users_id);
+    console.log(dataRecipeId.rows[0].users_id);
+    if (users_id != dataRecipeId.rows[0].users_id) {
+      return res.status(404).json({ message: "not your recipe" });
+    }
 
     console.log("dataRecipeId");
     console.log(dataRecipeId);
@@ -180,8 +178,8 @@ const recipeController = {
     let data = {
       recipe_name: recipe_name || dataRecipeId.rows[0].recipe_name,
       recipe_desc: recipe_desc || dataRecipeId.rows[0].recipe_desc,
-      recipe_ingredients:
-        recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
+      recipe_ingredients: recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
+      // users_id: parseInt(users_id) || dataRecipeId.rows[0].users_id,
       category_id: parseInt(category_id) || dataRecipeId.rows[0].category_id,
       recipe_image: recipe_image || dataRecipeId.rows[0].recipe_image
     };
@@ -198,20 +196,21 @@ const recipeController = {
     }
     let dataRecipeId = await getRecipeById(parseInt(id));
 
-    // let users_id = req.payload.id;
+    let users_id = req.payload.id;
 
-    // console.log("id data");
-    // console.log(users_id);
-    // console.log(dataRecipeId.rows[0].users_id);
-    // if (users_id != dataRecipeId.rows[0].users_id) {
-    //   return res.status(404).json({ message: "recipe bukan milik anda" });
-    // }
     if (!dataRecipeId.rows[0]) {
       return res.status(200).json({
         status: 200,
         message: "get data recipe data not found",
         data: [],
       });
+    }
+
+    console.log("id data");
+    console.log(users_id);
+    console.log(dataRecipeId.rows[0]);
+    if (users_id != dataRecipeId.rows[0].users_id) {
+      return res.status(404).json({ message: "not your recipe" });
     }
 
     let deleteRecipeId = await deleteRecipeById(parseInt(id));

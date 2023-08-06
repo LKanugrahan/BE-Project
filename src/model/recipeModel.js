@@ -19,7 +19,7 @@ const getRecipe = () => {
 const getRecipeById = (id) => {
   return new Promise((resolve, reject) => {
     pg.query(
-      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE recipe.id=${id}`,
+      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, recipe.users_id, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE recipe.id=${id}`,
       (err, result) => {
         if (err) {
           reject(err);
@@ -78,6 +78,7 @@ const putRecipe = async (data, id) => {
     recipe_desc,
     recipe_ingredients,
     category_id,
+    // users_id,
     recipe_image,
   } = data;
   console.log("model putRecipe");

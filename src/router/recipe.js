@@ -13,9 +13,9 @@ const { Protect } = require("./../middleware/protect");
 router.get("/", getData);
 router.get("/detail", getDataSearch);
 router.get("/:id", getDataById);
-router.post("/", postData);
-router.put("/:id", putData);
-router.delete("/:id", deleteDataById);
+router.post("/", Protect, postData);
+router.put("/:id", Protect, putData);
+router.delete("/:id", Protect, deleteDataById);
 
 module.exports = router;
 
