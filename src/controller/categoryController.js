@@ -4,10 +4,17 @@ const categoryController = {
       let dataCategory = await getCategory();
       console.log("dataCategory");
       console.log(dataCategory);
+      if (!dataCategory.rows[0]) {
+        return res.status(200).json({
+          status: 200,
+          message: "get data category data not found",
+          data: [],
+        });
+      }
       if (dataCategory) {
         res.status(200).json({
           status: 200,
-          message: "get data Category success",
+          message: "get data category success",
           data: dataCategory.rows,
         });
       }
@@ -16,7 +23,7 @@ const categoryController = {
     getDataById: async (req, res, next) => {
         const { id } = req.params;
         if (isNaN(id) || id < 0 || !id) {
-          return res.status(404).json({ message: "id wrong" });
+          return res.status(404).json({ message: "wrong input id" });
         }
     
         let dataCategoryId = await getCategoryById(parseInt(id));
@@ -25,14 +32,14 @@ const categoryController = {
         if (!dataCategoryId.rows[0]) {
           return res.status(200).json({
             status: 200,
-            message: "get data Category data not found",
+            message: "get data category data not found",
             data: [],
           });
         }
         if (dataCategoryId) {
           res.status(200).json({
             status: 200,
-            message: "get data Category success",
+            message: "get data category success",
             data: dataCategoryId.rows,
           });
         }

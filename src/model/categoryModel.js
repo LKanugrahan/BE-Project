@@ -1,7 +1,7 @@
 const pg = require("../config/db");
 const getCategory = () => {
   return new Promise((resolve, reject) => {
-    pg.query("SELECT * FROM food_category", (err, result) => {
+    pg.query("SELECT * FROM category", (err, result) => {
       if (err) {
         reject(err);
       } else {
@@ -13,7 +13,7 @@ const getCategory = () => {
 
 const getCategoryById = (id) => {
     return new Promise((resolve, reject) => {
-      pg.query(`SELECT * FROM food_category WHERE food_category.id=${id}`, (err, result) => {
+      pg.query(`SELECT * FROM category WHERE category.id=${id}`, (err, result) => {
         if (err) {
           reject(err);
         } else {

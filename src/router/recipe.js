@@ -1,17 +1,23 @@
-const { getData, getDataById,getDataSearch,deleteDataById, postData, putData } = require('../controller/recipeController');
+const {
+  getData,
+  getDataById,
+  getDataSearch,
+  deleteDataById,
+  postData,
+  putData,
+} = require("../controller/recipeController");
 const app = require("express");
 const router = app.Router();
-const {Protect} = require('./../middleware/protect')
+const { Protect } = require("./../middleware/protect");
 
-router.get('/', getData);
-router.get('/detail', getDataSearch);
-router.post('/',Protect, postData);
-router.put('/:id',Protect, putData);
-router.get('/:id', getDataById);
-router.delete('/:id', Protect, deleteDataById);
+router.get("/", getData);
+router.get("/detail", getDataSearch);
+router.get("/:id", getDataById);
+router.post("/", postData);
+router.put("/:id", putData);
+router.delete("/:id", deleteDataById);
 
 module.exports = router;
-
 
 // app.get("/users", (req, res) => {
 //   res.status(200).json({ name: "F Kanugrahan" });

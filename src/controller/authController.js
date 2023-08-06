@@ -11,7 +11,7 @@ const AuthController = {
         .status(404)
         .json({
           status: 404,
-          message: "email, password dan username harus diisi dengan benar",
+          message: "input correctly, please",
         });
     }
 
@@ -22,7 +22,7 @@ const AuthController = {
         .status(404)
         .json({
           status: 404,
-          message: "email sudah terdaftar, silahkan login",
+          message: "Email is already registered",
         });
     }
 
@@ -35,15 +35,16 @@ const AuthController = {
     };
 
     let data = await createUser(dataUser);
+    console.log("create")
     console.log(data);
 
     if (!data.rowCount == 1) {
-      return res.status(404).json({ status: 404, message: "register gagal" });
+      return res.status(404).json({ status: 404, message: "register failed" });
     }
 
     return res
       .status(200)
-      .json({ status: 200, message: "register user berhasil" });
+      .json({ status: 200, message: "User registration successful", dataUser });
   },
 
   login: async (req, res, next) => {
@@ -53,7 +54,7 @@ const AuthController = {
     if (!email || !password) {
       return res.status(404).json({
         status: 404,
-        message: "email atau password harus diisi dengan benar",
+        message: "input correctly, please",
       });
     }
 
@@ -63,7 +64,7 @@ const AuthController = {
     if (!data.rows[0]) {
       return res
         .status(404)
-        .json({ status: 404, message: "email belum terdaftar" });
+        .json({ status: 404, message: "Email is not yet registered" });
     }
 
     let users = data.rows[0];
@@ -71,7 +72,7 @@ const AuthController = {
     console.log(users.password);
     let verify = await argon2.verify(users.password, password);
     if (!verify) {
-      return res.status(404).json({ status: 404, message: "password salah" });
+      return res.status(404).json({ status: 404, message: "Invalid password" });
     }
     delete users.password;
     let token = GenerateToken(users);

@@ -13,54 +13,73 @@ const getUsers = () => {
   });
 };
 
-
-const postUsers = async (data) => {
-    const { name, email, password } = data;
-    console.log(data);
-    console.log("model postUsers");
-    return new Promise((resolve, reject) =>
-      pg.query(
-        `INSERT INTO users (name, email, password) VALUES('${name}','${email}', '${password}')`,
-        (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        }
-      )
-    );
-  };
-  
-
-const putUsers = async (id, data) => {
-    const { name, email, password } = data;
-    console.log("model putUsers");
-    return new Promise((resolve, reject) =>
-      pg.query(
-        `UPDATE users SET name='${name}', email='${email}', password='${password}'WHERE id=${id}`,
-        (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
-        }
-      )
-    );
-  };
-  
-
-const deleteUsersById = (id) => {
-    return new Promise((resolve, reject) => {
-      pg.query(`DELETE FROM users WHERE id = ${id}`, (err, result) => {
+// Buat validasi deleteUsersById
+const getUsersById = (id) => {
+  return new Promise((resolve, reject) => {
+    pg.query(
+      `SELECT name, email, created_at FROM users WHERE id=${id}`,
+      (err, result) => {
         if (err) {
           reject(err);
         } else {
           resolve(result);
         }
-      });
-    });
-  };
+      }
+    );
+  });
+};
 
-module.exports = {getUsers,postUsers,putUsers,deleteUsersById,/*getUsersById,*/};
+const putUsers = async (id, data) => {
+  const { name, email, password } = data;
+  console.log("model putUsers");
+  return new Promise((resolve, reject) =>
+    pg.query(
+      `UPDATE users SET name='${name}', email='${email}', password='${password}'WHERE id=${id}`,
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    )
+  );
+};
+
+const deleteUsersById = (id) => {
+  return new Promise((resolve, reject) => {
+    pg.query(`DELETE FROM users WHERE id = ${id}`, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+// const postUsers = async (data) => {
+//     const { name, email, password } = data;
+//     console.log(data);
+//     console.log("model postUsers");
+//     return new Promise((resolve, reject) =>
+//       pg.query(
+//         `INSERT INTO users (name, email, password) VALUES('${name}','${email}', '${password}')`,
+//         (err, result) => {
+//           if (err) {
+//             reject(err);
+//           } else {
+//             resolve(result);
+//           }
+//         }
+//       )
+//     );
+//   };
+
+module.exports = {
+  getUsers,
+  getUsersById,
+  // postUsers,
+  putUsers,
+  deleteUsersById
+};

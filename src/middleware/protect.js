@@ -15,7 +15,7 @@ const Protect = async (req,res,next) => {
     req.payload = decoded  
     next()
     } catch(err){
-        return res.status(404).json({"status":404,"message":"token wrong",err})
+        return res.status(404).json({"status":404,"message":"Invalid Token",err})
     }
 
 }

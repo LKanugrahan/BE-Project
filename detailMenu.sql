@@ -333,3 +333,5 @@ SET NOT NULL;
 UPDATE users SET password = '$argon2id$v=19$m=65536,t=3,p=4$JJtWcUpzQQohhqGPl7QYXw$xdFFzP/Fd0DkGz6gucXGAzJ1n6drG+kUzyd1xFb7z2E' WHERE id = 1;
 
 ALTER TABLE users DROP COLUMN photo, DROP COLUMN phone_number;
+
+SELECT users.name, users.created_at FROM users WHERE users.id=11;

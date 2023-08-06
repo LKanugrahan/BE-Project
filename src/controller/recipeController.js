@@ -2,16 +2,23 @@ const {
   getRecipe,
   getRecipeById,
   getRecipeSearchSortPagination,
-  deleteRecipeById,
   postRecipe,
   putRecipe,
+  deleteRecipeById,
 } = require("../model/recipeModel");
 
 const recipeController = {
   getData: async (req, res, next) => {
     let dataRecipe = await getRecipe();
-    console.log("dataRecipe");
+    console.log("data Recipe");
     console.log(dataRecipe);
+    if (!dataRecipe.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
+    }
     if (dataRecipe) {
       res.status(200).json({
         status: 200,
@@ -20,34 +27,13 @@ const recipeController = {
       });
     }
   },
-  getDataSearch: async (req, res, next) => {
-    const { search, searchBy, offset, limit, order, sort } = req.query;
-    let page = req.query.page || 1;
-    let limiter = limit || 3;
-
-    data = {
-      order: order || "recipe.id",
-      sort: sort || "ASC",
-      search: search || "",
-      searchBy: searchBy || "recipe_name",
-      offset: (page - 1) * limiter,
-      limit: limit || 3,
-    };
-    let dataSearch = await getRecipeSearchSortPagination(data);
-    if (dataSearch) {
-      res.status(200).json({
-        status: 200,
-        message: "get data recipe success",
-        data: dataSearch.rows,
-      });
-    }
-  },
   getDataById: async (req, res, next) => {
     const { id } = req.params;
+    // let numberId = parseInt(req.params.id)
+    // console.log(numberId)
     if (isNaN(id) || id < 0 || !id) {
-      return res.status(404).json({ message: "id wrong" });
+      return res.status(404).json({ message: "wrong input id" });
     }
-
     let dataRecipeId = await getRecipeById(parseInt(id));
     console.log("dataRecipeId");
     console.log(dataRecipeId);
@@ -66,89 +52,127 @@ const recipeController = {
       });
     }
   },
-  deleteDataById: async (req, res, next) => {
-    const { id } = req.params;
-    if (isNaN(id) || id < 0 || !id) {
-      return res.status(404).json({ message: "id wrong" });
+  getDataSearch: async (req, res, next) => {
+    const { page, order, sort, search, searchBy, limit, offset } = req.query;
+    data = {
+      page: page || 1,
+      order: order || "recipe.id",
+      sort: sort || "ASC",
+      search: search || "",
+      searchBy: searchBy || "recipe_name",
+      limit: limit || 3,
+      offset: (page - 1) * limit,
+    };
+    console.log(data);
+    let dataSearch = await getRecipeSearchSortPagination(data);
+    if (!dataSearch.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
     }
-    let dataRecipeId = await getRecipeById(parseInt(id));
-
-    let users_id = req.payload.id;
-
-    console.log("id data");
-    console.log(users_id);
-    console.log(dataRecipeId.rows[0].users_id);
-    if (users_id != dataRecipeId.rows[0].users_id) {
-      return res.status(404).json({ message: "recipe bukan milik anda" });
-    }
-
-    let deleteRecipeId = await deleteRecipeById(parseInt(id));
-    console.log("deleteRecipeId");
-    console.log(deleteRecipeId);
-    if (deleteRecipeId) {
+    if (dataSearch) {
       res.status(200).json({
         status: 200,
-        message: "delete data recipe success",
-        data: deleteRecipeId.rows,
+        message: "get data recipe success",
+        data: dataSearch.rows,
       });
     }
   },
   postData: async (req, res, next) => {
-    const { recipe_name, recipe_desc, recipe_ingredients, category_id } =
-      req.body;
-    console.log("post data ");
-    console.log(recipe_name, recipe_desc, recipe_ingredients, category_id);
+    const {
+      recipe_name,
+      recipe_desc,
+      recipe_ingredients,
+      category_id,
+      users_id,
+      recipe_image,
+    } = req.body;
 
-    let users_id = req.payload.id;
-    console.log("payload");
-    console.log(req.payload);
+    console.log(req.body);
 
-    if (!recipe_name || !recipe_desc || !recipe_ingredients) {
+    console.log("post data");
+    console.log(
+      recipe_name,
+      recipe_desc,
+      recipe_ingredients,
+      category_id,
+      users_id,
+      recipe_image
+    );
+
+    // let users_id = req.payload.id;
+    // console.log("payload");
+    // console.log(req.payload);
+
+    if (
+      !recipe_name ||
+      !recipe_desc ||
+      !recipe_ingredients ||
+      !category_id ||
+      !users_id ||
+      !recipe_image
+    ) {
       return res.status(404).json({
-        message: "input recipe_name, recipe_desc, recipe_ingredients required",
+        message: "input correctly",
       });
     }
 
     let data = {
-      recipe_name: recipe_name,
-      recipe_desc: recipe_desc,
-      recipe_ingredients: recipe_ingredients,
-      category_id: category_id,
+      recipe_name,
+      recipe_desc,
+      recipe_ingredients,
+      category_id,
       users_id,
+      recipe_image,
     };
 
     console.log("data");
     console.log(data);
 
-    try {
-      let result = await postRecipe(data);
-      console.log(result);
+    let result = await postRecipe(data);
+    console.log(result);
 
-      return res
-        .status(200)
-        .json({ status: 200, message: "data recipe success", data });
-    } catch (error) {
-      return res.status(500).json({ message: "Internal Server Error" });
-    }
+    return res
+      .status(200)
+      .json({ status: 200, message: "data recipe success", data });
   },
 
   putData: async (req, res, next) => {
     const { id } = req.params;
-    const { recipe_name, recipe_desc, recipe_ingredients, category_id } =
-      req.body;
+    const {
+      recipe_name,
+      recipe_desc,
+      recipe_ingredients,
+      category_id,
+      recipe_image,
+    } = req.body;
+
+
     if (!id || id <= 0 || isNaN(id)) {
-      return res.status(404).json({ message: "id wrong" });
+      return res.status(404).json({ message: "wrong input id" });
     }
 
     let dataRecipeId = await getRecipeById(parseInt(id));
 
-    let users_id = req.payload.id;
+    // let users_id = req.payload.id;
 
-    console.log("id data");
-    console.log(users_id);
-    console.log(dataRecipeId.rows[0].users_id);
-    if (users_id != dataRecipeId.rows[0].users_id) {
-      return res.status(404).json({ message: "recipe bukan milik anda" });
+    // console.log("id data");
+    // console.log(users_id);
+    // console.log(dataRecipeId.rows[0].users_id);
+    // if (users_id != dataRecipeId.rows[0].users_id) {
+    //   return res.status(404).json({ message: "recipe bukan milik anda" });
+    // }
+
+    console.log("dataRecipeId");
+    console.log(dataRecipeId);
+    if (!dataRecipeId.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
     }
 
     console.log("put data");
@@ -159,13 +183,49 @@ const recipeController = {
       recipe_ingredients:
         recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
       category_id: parseInt(category_id) || dataRecipeId.rows[0].category_id,
+      recipe_image: recipe_image || dataRecipeId.rows[0].recipe_image
     };
-    let result = putRecipe(data, id);
+    let result = await putRecipe(data, id);
     console.log(result);
-    delete data.id;
     return res
       .status(200)
       .json({ status: 200, message: "update data recipe success", data });
+  },
+  deleteDataById: async (req, res, next) => {
+    const { id } = req.params;
+    if (isNaN(id) || id < 0 || !id) {
+      return res.status(404).json({ message: "wrong input id" });
+    }
+    let dataRecipeId = await getRecipeById(parseInt(id));
+
+    // let users_id = req.payload.id;
+
+    // console.log("id data");
+    // console.log(users_id);
+    // console.log(dataRecipeId.rows[0].users_id);
+    // if (users_id != dataRecipeId.rows[0].users_id) {
+    //   return res.status(404).json({ message: "recipe bukan milik anda" });
+    // }
+    if (!dataRecipeId.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
+    }
+
+    let deleteRecipeId = await deleteRecipeById(parseInt(id));
+    console.log("deleteRecipeId");
+    console.log(deleteRecipeId);
+    console.log(dataRecipeId.rows)
+    if (deleteRecipeId) {
+      res.status(200).json({
+        status: 200,
+        message: "delete data recipe success",
+        data: dataRecipeId.rows,
+        dataDelete: deleteRecipeId.rows
+      });
+    }
   },
 };
 

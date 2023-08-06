@@ -1,15 +1,22 @@
 const {
   getUsers,
-  postUsers,
+  getUsersById,
+  // postUsers,
   putUsers,
-  deleteUsersById
+  deleteUsersById,
 } = require("../model/usersModel");
+const argon2 = require("argon2");
 
 const UsersController = {
   getData: async (req, res, next) => {
     let dataUsers = await getUsers();
-    console.log("dataUsers");
-    console.log(dataUsers);
+    if (!dataUsers.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
+    }
     if (dataUsers) {
       res.status(200).json({
         status: 200,
@@ -19,81 +26,90 @@ const UsersController = {
     }
   },
 
-  deleteDataById: async (req, res, next) => {
-    const { id } = req.params;
-    if (isNaN(id) || id < 0 || !id) {
-      return res.status(404).json({ message: "id wrong" });
-    }
-
-    let deleteUsersId = await deleteUsersById(parseInt(id));
-    console.log("deleteUsersId");
-    console.log(deleteUsersId);
-    if (deleteUsersId) {
-      res.status(200).json({
-        status: 200,
-        message: "delete data Users success",
-        data: deleteUsersId.rows,
-      });
-    }
-  },
-  postData: async (req, res, next) => {
-    const { name, email, password } = req.body;
-    console.log("post data ");
-    console.log(name, email, password);
-
-    if (!name || !email) {
-      return res.status(404).json({
-        message: "input name, email, password required",
-      });
-    }
-
-    let data = {
-      name: name,
-      email: email,
-      password: password,
-    };
-
-    console.log("data");
-    console.log(data);
-
-    try {
-      let result = await postUsers(data);
-      console.log(result);
-
-      return res
-        .status(200)
-        .json({ status: 200, message: "data Users success", data });
-    } catch (error) {
-      return res.status(500).json({ message: "Internal Server Error" });
-    }
-  },
-
   putData: async (req, res, next) => {
     const { id } = req.params;
     const { name, email, password } = req.body;
 
     if (!id || id <= 0 || isNaN(id)) {
-      return res.status(404).json({ message: "id wrong" });
+      return res.status(404).json({ message: "wrong input id" });
+    }
+
+    let dataUsersId = await getUsersById(parseInt(id));
+    if (!dataUsersId.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
     }
 
     let data = {
-      name: name,
-      email: email,
-      password: password,
+      name: name || dataUsersId.rows[0].name,
+      email: email || dataUsersId.rows[0].email,
+      password: await argon2.hash(password)  || dataUsersId.rows[0].password,
     };
 
-    try {
-      let result = await putUsers(parseInt(id), data);
-      console.log(result);
+    let updateUsersId = await putUsers(parseInt(id), data);
+    let dataAfter = await getUsersById(parseInt(id));
 
-      // delete data.id;
-      return res
-        .status(200)
-        .json({ status: 200, message: "update data Users success", data });
-    } catch (error) {
-      return res.status(500).json({ message: "Internal Server Error" });
+    return res
+      .status(200)
+      .json({ status: 200, message: "update data Users success", dataBefore: dataUsersId.rows, dataAfter: dataAfter.rows});
+  },
+
+  deleteDataById: async (req, res, next) => {
+    const { id } = req.params;
+    if (isNaN(id) || id < 0 || !id) {
+      return res.status(404).json({ message: "wrong input data" });
+    }
+
+    let dataUsersId = await getUsersById(parseInt(id));
+    console.log(dataUsersId);
+    if (!dataUsersId.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
+    }
+
+    let deleteUsersId = await deleteUsersById(parseInt(id));
+    if (deleteUsersId) {
+      res.status(200).json({
+        status: 200,
+        message: "delete data Users success",
+        data: dataUsersId.rows,
+        dataDelete: deleteUsersId.rows,
+      });
     }
   },
+  // postData: async (req, res, next) => {
+  //   const { name, email, password } = req.body;
+  //   console.log("post data ");
+  //   console.log(name, email, password);
+
+  //   if (!name || !email || !password) {
+  //     return res.status(404).json({
+  //       message: "input name, email, password required",
+  //     });
+  //   }
+
+  //   let data = {
+  //     name,
+  //     email,
+  //     password,
+  //   };
+
+  //   console.log("data");
+  //   console.log(data);
+
+  //   let result = await postUsers(data);
+  //   console.log(result);
+
+  //   return res
+  //     .status(200)
+  //     .json({ status: 200, message: "data Users success", data });
+  // },
 };
 
 module.exports = UsersController;
