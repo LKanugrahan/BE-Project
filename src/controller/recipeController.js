@@ -7,6 +7,8 @@ const {
   deleteRecipeById,
 } = require("../model/recipeModel");
 
+const cloudinary = require("../config/photo");
+
 const recipeController = {
   getData: async (req, res, next) => {
     let dataRecipe = await getRecipe();
@@ -88,10 +90,13 @@ const recipeController = {
       category_id,
       recipe_image,
     } = req.body;
+    console.log("post file");
+    console.log(req.file);
 
     console.log(req.body);
 
     console.log("post data");
+
     console.log(
       recipe_name,
       recipe_desc,
@@ -99,6 +104,22 @@ const recipeController = {
       category_id,
       recipe_image
     );
+
+    if (!req.isFileValid) {
+      return res.status(404).json({ message: req.isFileValidMessage });
+    }
+
+    const ImageCloud = await cloudinary.uploader.upload(req.file.path, {
+      folder: "be-project",
+    });
+
+    if (!ImageCloud) {
+      return res.status(404).json({ message: "upload photo fail" });
+    }
+    console.log(ImageCloud);
+
+
+
 
     let users_id = req.payload.id;
     console.log("payload");
@@ -109,8 +130,7 @@ const recipeController = {
       !recipe_desc ||
       !recipe_ingredients ||
       !category_id ||
-      !users_id ||
-      !recipe_image
+      !users_id
     ) {
       return res.status(404).json({
         message: "input correctly",
@@ -123,7 +143,7 @@ const recipeController = {
       recipe_ingredients,
       category_id,
       users_id,
-      recipe_image,
+      recipe_image: ImageCloud.secure_url,
     };
 
     console.log("data");
@@ -146,7 +166,8 @@ const recipeController = {
       category_id,
       recipe_image,
     } = req.body;
-
+    console.log("req.body")
+    console.log(req.body)
 
     if (!id || id <= 0 || isNaN(id)) {
       return res.status(404).json({ message: "wrong input id" });
@@ -173,22 +194,39 @@ const recipeController = {
       });
     }
 
+    if (!req.isFileValid) {
+      return res.status(404).json({ message: req.isFileValidMessage });
+    }
+
+    const ImageCloud = await cloudinary.uploader.upload(req.file.path, {
+      folder: "be-project",
+    });
+
+    if (!ImageCloud) {
+      return res.status(404).json({ message: "upload photo fail" });
+    }
+    console.log(ImageCloud);
+
     console.log("put data");
     console.log(dataRecipeId.rows[0]);
     let data = {
       recipe_name: recipe_name || dataRecipeId.rows[0].recipe_name,
       recipe_desc: recipe_desc || dataRecipeId.rows[0].recipe_desc,
-      recipe_ingredients: recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
-      // users_id: parseInt(users_id) || dataRecipeId.rows[0].users_id,
+      recipe_ingredients:
+        recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
+      users_id: parseInt(users_id) || dataRecipeId.rows[0].users_id,
       category_id: parseInt(category_id) || dataRecipeId.rows[0].category_id,
-      recipe_image: recipe_image || dataRecipeId.rows[0].recipe_image
+      recipe_image: ImageCloud.secure_url || dataRecipeId.rows[0].recipe_image,
     };
-    let result = await putRecipe(data, id);
+
+    let result = await putRecipe(parseInt(id), data);
+    let after = await getRecipeById(parseInt(id))
     console.log(result);
     return res
       .status(200)
-      .json({ status: 200, message: "update data recipe success", data });
+      .json({ status: 200, message: "update data recipe success", data, after: after.rows[0] });
   },
+
   deleteDataById: async (req, res, next) => {
     const { id } = req.params;
     if (isNaN(id) || id < 0 || !id) {
@@ -216,13 +254,13 @@ const recipeController = {
     let deleteRecipeId = await deleteRecipeById(parseInt(id));
     console.log("deleteRecipeId");
     console.log(deleteRecipeId);
-    console.log(dataRecipeId.rows)
+    console.log(dataRecipeId.rows);
     if (deleteRecipeId) {
       res.status(200).json({
         status: 200,
         message: "delete data recipe success",
         data: dataRecipeId.rows,
-        dataDelete: deleteRecipeId.rows
+        dataDelete: deleteRecipeId.rows,
       });
     }
   },

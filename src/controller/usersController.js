@@ -46,10 +46,11 @@ const UsersController = {
     let data = {
       name: name || dataUsersId.rows[0].name,
       email: email || dataUsersId.rows[0].email,
-      password: await argon2.hash(password)  || dataUsersId.rows[0].password,
+      password: await argon2.hash(password) || dataUsersId.rows[0].password,
     };
 
     let updateUsersId = await putUsers(parseInt(id), data);
+    console.log(updateUsersId)
     let dataAfter = await getUsersById(parseInt(id));
 
     return res

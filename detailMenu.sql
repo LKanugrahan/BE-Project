@@ -335,3 +335,5 @@ UPDATE users SET password = '$argon2id$v=19$m=65536,t=3,p=4$JJtWcUpzQQohhqGPl7QY
 ALTER TABLE users DROP COLUMN photo, DROP COLUMN phone_number;
 
 SELECT users.name, users.created_at FROM users WHERE users.id=11;
+
+ALTER TABLE recipe ALTER COLUMN recipe_image TYPE TEXT;
