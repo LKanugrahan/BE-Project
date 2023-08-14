@@ -35,7 +35,7 @@ const getRecipeSearchSortPagination = async (data) => {
   const { search, searchBy, offset, limit, order, sort } = data;
   return new Promise((resolve, reject) => {
     pg.query(
-      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE ${searchBy} ILIKE '%${search}%' ORDER BY ${order} ${sort} OFFSET ${offset} LIMIT ${limit}`,
+      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, recipe.users_id, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE ${searchBy} ILIKE '%${search}%' ORDER BY ${order} ${sort} OFFSET ${offset} LIMIT ${limit}`,
       (err, result) => {
         if (err) {
           reject(err);
