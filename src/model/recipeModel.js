@@ -4,7 +4,7 @@ const pg = require("../config/db");
 const getRecipe = () => {
   return new Promise((resolve, reject) => {
     pg.query(
-      "SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id;",
+      "SELECT recipe.id, recipe.recipe_name, recipe.recipe_ingredients, recipe.recipe_image, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id;",
       (err, result) => {
         if (err) {
           reject(err);
@@ -19,7 +19,7 @@ const getRecipe = () => {
 const getRecipeById = (id) => {
   return new Promise((resolve, reject) => {
     pg.query(
-      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, recipe.users_id, recipe.category_id, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE recipe.id=${id}`,
+      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_ingredients, recipe.recipe_image, recipe.users_id, recipe.category_id, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE recipe.id=${id}`,
       (err, result) => {
         if (err) {
           reject(err);
@@ -35,7 +35,7 @@ const getRecipeSearchSortPagination = async (data) => {
   const { search, searchBy, offset, limit, order, sort } = data;
   return new Promise((resolve, reject) => {
     pg.query(
-      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_desc, recipe.recipe_ingredients, recipe.recipe_image, recipe.users_id, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE ${searchBy} ILIKE '%${search}%' ORDER BY ${order} ${sort} OFFSET ${offset} LIMIT ${limit}`,
+      `SELECT recipe.id, recipe.recipe_name, recipe.recipe_ingredients, recipe.recipe_image, recipe.users_id, category.category, users.name, users.created_at FROM recipe JOIN category ON recipe.category_id = category.id JOIN users ON recipe.users_id = users.id WHERE ${searchBy} ILIKE '%${search}%' ORDER BY ${order} ${sort} OFFSET ${offset} LIMIT ${limit}`,
       (err, result) => {
         if (err) {
           reject(err);
@@ -50,7 +50,6 @@ const getRecipeSearchSortPagination = async (data) => {
 const postRecipe = async (data) => {
   const {
     recipe_name,
-    recipe_desc,
     recipe_ingredients,
     category_id,
     users_id,
@@ -60,7 +59,7 @@ const postRecipe = async (data) => {
   console.log("model postRecipe");
   return new Promise((resolve, reject) =>
     pg.query(
-      `INSERT INTO recipe (recipe_name, recipe_desc, recipe_ingredients, category_id, users_id, recipe_image) VALUES('${recipe_name}','${recipe_desc}','${recipe_ingredients}', '${category_id}', '${users_id}', '${recipe_image}')`,
+      `INSERT INTO recipe (recipe_name, recipe_ingredients, category_id, users_id, recipe_image) VALUES('${recipe_name}','${recipe_ingredients}', '${category_id}', '${users_id}', '${recipe_image}')`,
       (err, result) => {
         if (err) {
           reject(err);
@@ -75,7 +74,6 @@ const postRecipe = async (data) => {
 const putRecipe = async (id, data) => {
   const {
     recipe_name,
-    recipe_desc,
     recipe_ingredients,
     category_id,
     users_id,
@@ -85,7 +83,7 @@ const putRecipe = async (id, data) => {
   console.log("model putRecipe");
   return new Promise((resolve, reject) =>
     pg.query(
-      `UPDATE recipe SET recipe_name='${recipe_name}', recipe_desc='${recipe_desc}', recipe_ingredients='${recipe_ingredients}', category_id=${category_id}, recipe_image='${recipe_image}' WHERE recipe.id=${id}`,
+      `UPDATE recipe SET recipe_name='${recipe_name}', recipe_ingredients='${recipe_ingredients}', category_id=${category_id}, recipe_image='${recipe_image}' WHERE recipe.id=${id}`,
       (err, result) => {
         if (err) {
           reject(err);

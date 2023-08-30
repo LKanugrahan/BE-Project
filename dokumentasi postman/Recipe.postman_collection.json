@@ -47,13 +47,13 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{url}}/recipe/13",
+							"raw": "{{url}}/recipe/60",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"recipe",
-								"13"
+								"60"
 							]
 						}
 					},
@@ -72,7 +72,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/recipe/detail?search=&searchBy=&sort=asc&page=5&limit=2",
+							"raw": "{{url}}/recipe/detail?sort=asc&page=2&limit=3",
 							"host": [
 								"{{url}}"
 							],
@@ -83,11 +83,13 @@
 							"query": [
 								{
 									"key": "search",
-									"value": ""
+									"value": "John",
+									"disabled": true
 								},
 								{
 									"key": "searchBy",
-									"value": ""
+									"value": "name",
+									"disabled": true
 								},
 								{
 									"key": "sort",
@@ -95,11 +97,11 @@
 								},
 								{
 									"key": "page",
-									"value": "5"
+									"value": "2"
 								},
 								{
 									"key": "limit",
-									"value": "2"
+									"value": "3"
 								},
 								{
 									"key": "order",
@@ -117,8 +119,8 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
+							"mode": "formdata",
+							"formdata": [
 								{
 									"key": "recipe_name",
 									"value": "ayam goreng",
@@ -136,6 +138,16 @@
 								},
 								{
 									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "recipe_image",
+									"type": "file",
+									"src": "/C:/Users/Asus/Downloads/React.png"
+								},
+								{
+									"key": "users_id",
 									"value": "1",
 									"type": "text"
 								}
@@ -176,17 +188,27 @@
 									"key": "recipe_ingredients",
 									"value": "tempe",
 									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "recipe_image",
+									"value": "apa aja",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/recipe/13",
+							"raw": "{{url}}/recipe/60",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"recipe",
-								"13"
+								"60"
 							]
 						}
 					},
@@ -199,22 +221,16 @@
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "z",
-									"type": "text"
-								}
-							]
+							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{url}}/recipe/13",
+							"raw": "{{url}}/recipe/38",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"recipe",
-								"13"
+								"38"
 							]
 						}
 					},
@@ -283,42 +299,18 @@
 					"response": []
 				},
 				{
-					"name": "POST USER",
+					"name": "DELETE USER",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "agus",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "agus@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "phone_number",
-									"value": "08211234567",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "dasdqwedsad",
-									"type": "text"
-								}
-							]
-						},
 						"url": {
-							"raw": "{{url}}/users",
+							"raw": "{{url}}/users/22",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"users"
+								"users",
+								"22"
 							]
 						}
 					},
@@ -334,52 +326,282 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "bagas",
+									"value": "langgeng",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "agus@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "phone_number",
-									"value": "08211234567",
+									"value": "lkanugrahan@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "qseawd",
+									"value": "qwerty",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/users/12",
+							"raw": "{{url}}/users/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"users",
-								"12"
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "john.smith@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwerty",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "guest2@example.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "abcde",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "DELETE USER",
+					"name": "REGISTER",
 					"request": {
-						"method": "DELETE",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "guest7@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "qwerty",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "guest4",
+									"type": "text"
+								},
+								{
+									"key": "phone_number",
+									"value": "123123123",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "photo",
+									"value": "photo_guest",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
 						"url": {
-							"raw": "{{url}}/users/12",
+							"raw": "{{url}}/auth/register",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"users",
-								"12"
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RECIPE WITH TOKEN",
+			"item": [
+				{
+					"name": "POST RECIPE WITH TOKEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "recipe_name",
+									"value": "tempegoreng",
+									"type": "text"
+								},
+								{
+									"key": "recipe_desc",
+									"value": "tempedigoreng",
+									"type": "text"
+								},
+								{
+									"key": "recipe_ingredients",
+									"value": "tempe",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "recipe_image",
+									"type": "file",
+									"src": "/C:/Users/Asus/Downloads/React.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/recipe/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE RECIPE DETAIL WITH TOKEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "recipe_name",
+									"value": "bakwan",
+									"type": "text"
+								},
+								{
+									"key": "recipe_desc",
+									"value": "ubi",
+									"type": "text"
+								},
+								{
+									"key": "recipe_ingredients",
+									"value": "ubi",
+									"type": "text"
+								},
+								{
+									"key": "category_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "recipe_image",
+									"type": "file",
+									"src": "/C:/Users/Asus/Downloads/Gravity.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/recipe/60",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"60"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE RECIPE DETAIL WITH TOKEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{url}}/recipe/59",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"59"
 							]
 						}
 					},

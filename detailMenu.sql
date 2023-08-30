@@ -337,3 +337,5 @@ ALTER TABLE users DROP COLUMN photo, DROP COLUMN phone_number;
 SELECT users.name, users.created_at FROM users WHERE users.id=11;
 
 ALTER TABLE recipe ALTER COLUMN recipe_image TYPE TEXT;
+
+ALTER TABLE recipe DROP COLUMN recipe_desc;

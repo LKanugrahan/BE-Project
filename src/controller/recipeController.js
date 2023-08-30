@@ -63,7 +63,7 @@ const recipeController = {
       search: search || "",
       searchBy: searchBy || "recipe_name",
       limit: limit || 3,
-      offset: (page - 1) * limit,
+      offset: (page - 1) * limit || 0,
     };
     console.log(data);
     let dataSearch = await getRecipeSearchSortPagination(data);
@@ -85,7 +85,6 @@ const recipeController = {
   postData: async (req, res, next) => {
     const {
       recipe_name,
-      recipe_desc,
       recipe_ingredients,
       category_id,
       recipe_image,
@@ -99,7 +98,6 @@ const recipeController = {
 
     console.log(
       recipe_name,
-      recipe_desc,
       recipe_ingredients,
       category_id,
       recipe_image
@@ -127,7 +125,6 @@ const recipeController = {
 
     if (
       !recipe_name ||
-      !recipe_desc ||
       !recipe_ingredients ||
       !category_id ||
       !users_id
@@ -139,7 +136,6 @@ const recipeController = {
 
     let data = {
       recipe_name,
-      recipe_desc,
       recipe_ingredients,
       category_id,
       users_id,
@@ -161,7 +157,6 @@ const recipeController = {
     const { id } = req.params;
     const {
       recipe_name,
-      recipe_desc,
       recipe_ingredients,
       category_id,
       recipe_image,
@@ -211,7 +206,6 @@ const recipeController = {
     console.log(dataRecipeId.rows[0]);
     let data = {
       recipe_name: recipe_name || dataRecipeId.rows[0].recipe_name,
-      recipe_desc: recipe_desc || dataRecipeId.rows[0].recipe_desc,
       recipe_ingredients:
         recipe_ingredients || dataRecipeId.rows[0].recipe_ingredients,
       users_id: parseInt(users_id) || dataRecipeId.rows[0].users_id,
