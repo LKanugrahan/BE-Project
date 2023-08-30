@@ -5,6 +5,8 @@ const {
   postRecipe,
   putRecipe,
   deleteRecipeById,
+  //TODO: KHUSUS MOBILE
+  getRecipeByUserId
 } = require("../model/recipeModel");
 
 const cloudinary = require("../config/photo");
@@ -255,6 +257,32 @@ const recipeController = {
         message: "delete data recipe success",
         data: dataRecipeId.rows,
         dataDelete: deleteRecipeId.rows,
+      });
+    }
+  },
+  //TODO: KHUSUS MOBILE
+  getDataByUserId: async (req, res, next) => {
+    const { id } = req.params;
+    // let numberId = parseInt(req.params.id)
+    // console.log(numberId)
+    if (isNaN(id) || id < 0 || !id) {
+      return res.status(404).json({ message: "wrong input id" });
+    }
+    let dataRecipeId = await getRecipeByUserId(parseInt(id));
+    console.log("dataRecipeId");
+    console.log(dataRecipeId);
+    if (!dataRecipeId.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data recipe data not found",
+        data: [],
+      });
+    }
+    if (dataRecipeId) {
+      res.status(200).json({
+        status: 200,
+        message: "get data recipe success",
+        data: dataRecipeId.rows,
       });
     }
   },
