@@ -18,7 +18,7 @@ const createUser = async (data) => {
   console.log("model createUser");
   return new Promise((resolve, reject) =>
     pg.query(
-      `INSERT INTO users(name,email,password) VALUES('${name}','${email}','${password}')`,
+      `INSERT INTO users(name,email,password,photo) VALUES('${name}','${email}','${password}', 'https://res.cloudinary.com/dafjb9vn7/image/upload/v1693639658/profile_cmqdrx.png')`,
       (err, result) => {
         if (err) {
           reject(err);

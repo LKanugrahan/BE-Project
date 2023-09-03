@@ -1,29 +1,28 @@
-const { getUserByEmail, createUser } = require("../model/authModel");
+const {
+  getUserByEmail,
+  createUser,
+} = require("../model/authModel");
 const argon2 = require("argon2");
 const { GenerateToken } = require("./../helpers/generateToken");
 
 const AuthController = {
   register: async (req, res, next) => {
-    let { email, password, name } = req.body;
+    let { email, password, name, photo } = req.body;
 
     if (!email || !password || !name) {
-      return res
-        .status(404)
-        .json({
-          status: 404,
-          message: "input correctly, please",
-        });
+      return res.status(404).json({
+        status: 404,
+        message: "input correctly, please",
+      });
     }
 
     let user = await getUserByEmail(email);
 
     if (user.rows[0]) {
-      return res
-        .status(404)
-        .json({
-          status: 404,
-          message: "Email is already registered",
-        });
+      return res.status(404).json({
+        status: 404,
+        message: "Email is already registered",
+      });
     }
 
     password = await argon2.hash(password);
@@ -32,10 +31,11 @@ const AuthController = {
       email,
       name,
       password,
+      photo,
     };
 
     let data = await createUser(dataUser);
-    console.log("create")
+    console.log("create");
     console.log(data);
 
     if (!data.rowCount == 1) {
@@ -87,12 +87,12 @@ const AuthController = {
 module.exports = AuthController;
 
 // try {
-  //   const hash = await argon2.hash(password);
-  //   if (hash) {
-  //     return res
-  //       .status(200)
-  //       .json({ status: 200, message: "hash user berhasil", hash:hash,password:password });
-  //   }
-  // } catch (err) {
-  //   return res.status(404).json({ status: 404, message: "hash user gagal",err });
-  // }
+//   const hash = await argon2.hash(password);
+//   if (hash) {
+//     return res
+//       .status(200)
+//       .json({ status: 200, message: "hash user berhasil", hash:hash,password:password });
+//   }
+// } catch (err) {
+//   return res.status(404).json({ status: 404, message: "hash user gagal",err });
+// }

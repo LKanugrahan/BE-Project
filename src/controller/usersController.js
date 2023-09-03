@@ -1,7 +1,7 @@
+const cloudinary = require("../config/photo");
 const {
   getUsers,
   getUsersById,
-  // postUsers,
   putUsers,
   deleteUsersById,
 } = require("../model/usersModel");
@@ -28,7 +28,7 @@ const UsersController = {
 
   putData: async (req, res, next) => {
     const { id } = req.params;
-    const { name, email, password } = req.body;
+    const { name, email, password, photo } = req.body;
 
     if (!id || id <= 0 || isNaN(id)) {
       return res.status(404).json({ message: "wrong input id" });
@@ -43,19 +43,64 @@ const UsersController = {
       });
     }
 
-    let data = {
-      name: name || dataUsersId.rows[0].name,
-      email: email || dataUsersId.rows[0].email,
-      password: await argon2.hash(password) || dataUsersId.rows[0].password,
-    };
+    let newPassword
+    if (password) {
+      newPassword = await argon2.hash(password)
+    }
 
-    let updateUsersId = await putUsers(parseInt(id), data);
-    console.log(updateUsersId)
-    let dataAfter = await getUsersById(parseInt(id));
+    if (!req.file) {
+      let data = {
+        name: name || dataUsersId.rows[0].name,
+        email: email || dataUsersId.rows[0].email,
+        password: newPassword || dataUsersId.rows[0].password,
+        photo: dataUsersId.rows[0].photo,
+      };
 
-    return res
-      .status(200)
-      .json({ status: 200, message: "update data Users success", dataBefore: dataUsersId.rows, dataAfter: dataAfter.rows});
+      let updateUsersId = await putUsers(parseInt(id), data);
+      console.log(updateUsersId);
+      let dataAfter = await getUsersById(parseInt(id));
+
+      return res
+        .status(200)
+        .json({
+          status: 200,
+          message: "update data Users success",
+          dataBefore: dataUsersId.rows,
+          dataAfter: dataAfter.rows,
+        });
+    } else {
+      if (!req.isFileValid) {
+        return res.status(404).json({ message: req.isFileValidMessage });
+      }
+
+      const ImageCloud = await cloudinary.uploader.upload(req.file.path, {
+        folder: "be-project",
+      });
+
+      if (!ImageCloud) {
+        return res.status(404).json({ message: "upload photo fail" });
+      }
+      console.log("put data");
+      let data = {
+        name: name || dataUsersId.rows[0].name,
+        email: email || dataUsersId.rows[0].email,
+        password: newPassword || dataUsersId.rows[0].password,
+        photo: ImageCloud.secure_url,
+      };
+
+      let updateUsersId = await putUsers(parseInt(id), data);
+      console.log(updateUsersId);
+      let dataAfter = await getUsersById(parseInt(id));
+
+      return res
+        .status(200)
+        .json({
+          status: 200,
+          message: "update data Users success",
+          dataBefore: dataUsersId.rows,
+          dataAfter: dataAfter.rows,
+        });
+    }
   },
 
   deleteDataById: async (req, res, next) => {
@@ -84,33 +129,6 @@ const UsersController = {
       });
     }
   },
-  // postData: async (req, res, next) => {
-  //   const { name, email, password } = req.body;
-  //   console.log("post data ");
-  //   console.log(name, email, password);
-
-  //   if (!name || !email || !password) {
-  //     return res.status(404).json({
-  //       message: "input name, email, password required",
-  //     });
-  //   }
-
-  //   let data = {
-  //     name,
-  //     email,
-  //     password,
-  //   };
-
-  //   console.log("data");
-  //   console.log(data);
-
-  //   let result = await postUsers(data);
-  //   console.log(result);
-
-  //   return res
-  //     .status(200)
-  //     .json({ status: 200, message: "data Users success", data });
-  // },
 };
 
 module.exports = UsersController;
