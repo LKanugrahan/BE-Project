@@ -13,14 +13,14 @@ const UsersController = {
     if (!dataUsers.rows[0]) {
       return res.status(200).json({
         status: 200,
-        message: "get data recipe data not found",
+        message: "get data user data not found",
         data: [],
       });
     }
     if (dataUsers) {
       res.status(200).json({
         status: 200,
-        message: "get data Users success",
+        message: "get data user success",
         data: dataUsers.rows,
       });
     }
@@ -38,7 +38,7 @@ const UsersController = {
     if (!dataUsersId.rows[0]) {
       return res.status(200).json({
         status: 200,
-        message: "get data recipe data not found",
+        message: "get data user data not found",
         data: [],
       });
     }
@@ -64,7 +64,7 @@ const UsersController = {
         .status(200)
         .json({
           status: 200,
-          message: "update data Users success",
+          message: "update data user success",
           dataBefore: dataUsersId.rows,
           dataAfter: dataAfter.rows,
         });
@@ -96,13 +96,33 @@ const UsersController = {
         .status(200)
         .json({
           status: 200,
-          message: "update data Users success",
+          message: "update data user success",
           dataBefore: dataUsersId.rows,
           dataAfter: dataAfter.rows,
         });
     }
   },
-
+  getDataById: async (req, res, next) => {
+    const { id } = req.params;
+    if (isNaN(id) || id < 0 || !id) {
+      return res.status(404).json({ message: "wrong input data" });
+    }
+    let dataUsers = await getUsersById(parseInt(id));
+    if (!dataUsers.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data user data not found",
+        data: [],
+      });
+    }
+    if (dataUsers) {
+      res.status(200).json({
+        status: 200,
+        message: "get data user success",
+        data: dataUsers.rows,
+      });
+    }
+  },
   deleteDataById: async (req, res, next) => {
     const { id } = req.params;
     if (isNaN(id) || id < 0 || !id) {
@@ -114,7 +134,7 @@ const UsersController = {
     if (!dataUsersId.rows[0]) {
       return res.status(200).json({
         status: 200,
-        message: "get data recipe data not found",
+        message: "get data user data not found",
         data: [],
       });
     }
@@ -123,7 +143,7 @@ const UsersController = {
     if (deleteUsersId) {
       res.status(200).json({
         status: 200,
-        message: "delete data Users success",
+        message: "delete data user success",
         data: dataUsersId.rows,
         dataDelete: deleteUsersId.rows,
       });

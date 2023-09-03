@@ -21,7 +21,7 @@ router.post("/", Protect, upload.single('recipe_image'), postData);
 router.put("/:id", Protect, upload.single('recipe_image'), putData);
 router.delete("/:id", Protect, deleteDataById);
 //TODO: KHUSUS MOBILE
-router.get("/mobile/:id", getDataByUserId);
+router.get("/mobile/:id", Protect, getDataByUserId);
 
 
 module.exports = router;

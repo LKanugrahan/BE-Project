@@ -61,7 +61,6 @@ const deleteUsersById = (id) => {
 module.exports = {
   getUsers,
   getUsersById,
-  // postUsers,
   putUsers,
   deleteUsersById,
 };
