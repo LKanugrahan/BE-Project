@@ -117,19 +117,19 @@ const AuthController = {
     }
 
     if (!req.file) {
-      let data = {
+      let input = {
         name: name || dataUsersId.rows[0].name,
         email: email || dataUsersId.rows[0].email,
         password: newPassword || dataUsersId.rows[0].password,
         photo: dataUsersId.rows[0].photo,
       };
 
-      let updateUsersId = await putUsers(parseInt(id), data);
-      console.log(updateUsersId);
-      let dataAfter = await getUsersById(parseInt(id));
+      let updateUsersId = await putUsers(parseInt(id), input);
+      let dataUser = await getUsersById(parseInt(id));
+      let data = dataUser.rows[0]
 
       delete dataUsersId.rows[0].password
-      delete dataAfter.rows[0].password
+      delete data.password
 
       let token = GenerateToken(data);
       data.token = token;
@@ -140,7 +140,7 @@ const AuthController = {
           status: 200,
           message: "update data user success",
           dataBefore: dataUsersId.rows,
-          data: dataAfter.rows,
+          data,
         });
     } else {
       if (!req.isFileValid) {
@@ -154,19 +154,19 @@ const AuthController = {
       if (!ImageCloud) {
         return res.status(404).json({ message: "upload photo fail" });
       }
-      let data = {
+      let input = {
         name: name || dataUsersId.rows[0].name,
         email: email || dataUsersId.rows[0].email,
         password: newPassword || dataUsersId.rows[0].password,
         photo: ImageCloud.secure_url,
       };
 
-      let updateUsersId = await putUsers(parseInt(id), data);
-      console.log(updateUsersId);
-      let dataAfter = await getUsersById(parseInt(id));
+      let updateUsersId = await putUsers(parseInt(id), input);
+      let dataUser = await getUsersById(parseInt(id));
+      let data = dataUser.rows[0]
 
       delete dataUsersId.rows[0].password
-      delete dataAfter.rows[0].password
+      delete data.password
 
       let token = GenerateToken(data);
       data.token = token;
@@ -177,7 +177,7 @@ const AuthController = {
           status: 200,
           message: "update data user success",
           dataBefore: dataUsersId.rows,
-          data: dataAfter.rows,
+          data,
         });
     }
   },
