@@ -17,7 +17,7 @@ const getUsers = () => {
 const getUsersById = async (id) => {
   return new Promise((resolve, reject) => {
     pg.query(
-      `SELECT name, email, photo FROM users WHERE id=${id}`,
+      `SELECT name, email, photo, password FROM users WHERE id=${id}`,
       (err, result) => {
         if (err) {
           reject(err);

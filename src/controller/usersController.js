@@ -60,6 +60,9 @@ const UsersController = {
       console.log(updateUsersId);
       let dataAfter = await getUsersById(parseInt(id));
 
+      delete dataUsersId.rows[0].password
+      delete dataAfter.rows[0].password
+
       return res
         .status(200)
         .json({
@@ -91,6 +94,9 @@ const UsersController = {
       let updateUsersId = await putUsers(parseInt(id), data);
       console.log(updateUsersId);
       let dataAfter = await getUsersById(parseInt(id));
+
+      delete dataUsersId.rows[0].password
+      delete dataAfter.rows[0].password
 
       return res
         .status(200)
