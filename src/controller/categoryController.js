@@ -2,8 +2,6 @@ const { getCategory, getCategoryById } = require("../model/categoryModel");
 const categoryController = {
     getData: async (req, res, next) => {
       let dataCategory = await getCategory();
-      console.log("dataCategory");
-      console.log(dataCategory);
       if (!dataCategory.rows[0]) {
         return res.status(200).json({
           status: 200,
@@ -27,8 +25,6 @@ const categoryController = {
         }
     
         let dataCategoryId = await getCategoryById(parseInt(id));
-        console.log("dataCategoryId");
-        console.log(dataCategoryId);
         if (!dataCategoryId.rows[0]) {
           return res.status(200).json({
             status: 200,

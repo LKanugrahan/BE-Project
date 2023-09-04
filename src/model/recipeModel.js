@@ -55,8 +55,6 @@ const postRecipe = async (data) => {
     users_id,
     recipe_image,
   } = data;
-  console.log(data);
-  console.log("model postRecipe");
   return new Promise((resolve, reject) =>
     pg.query(
       `INSERT INTO recipe (recipe_name, recipe_ingredients, category_id, users_id, recipe_image) VALUES('${recipe_name}','${recipe_ingredients}', '${category_id}', '${users_id}', '${recipe_image}')`,
@@ -79,8 +77,6 @@ const putRecipe = async (id, data) => {
     users_id,
     recipe_image,
   } = data;
-  console.log(data);
-  console.log("model putRecipe");
   return new Promise((resolve, reject) =>
     pg.query(
       `UPDATE recipe SET recipe_name='${recipe_name}', recipe_ingredients='${recipe_ingredients}', category_id=${category_id}, recipe_image='${recipe_image}' WHERE recipe.id=${id}`,

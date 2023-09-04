@@ -1,9 +1,13 @@
 const {
   getUserByEmail,
   createUser,
+  getUsersById,
+  putUsers
 } = require("../model/authModel");
 const argon2 = require("argon2");
 const { GenerateToken } = require("./../helpers/generateToken");
+const cloudinary = require("../config/photo");
+
 
 const AuthController = {
   register: async (req, res, next) => {
@@ -27,29 +31,31 @@ const AuthController = {
 
     password = await argon2.hash(password);
 
-    let dataUser = {
+    let input = {
       email,
       name,
       password,
       photo,
     };
 
-    let data = await createUser(dataUser);
-    console.log("create");
-    console.log(data);
+    let regist = await createUser(input);
 
-    if (!data.rowCount == 1) {
+    if (!regist.rowCount == 1) {
       return res.status(404).json({ status: 404, message: "register failed" });
     }
 
+    let dataUser = await getUserByEmail(email)
+    let data = dataUser.rows[0]
+
+    delete data.password
+
     return res
       .status(200)
-      .json({ status: 200, message: "User registration successful", dataUser });
+      .json({ status: 200, message: "User registration successful", data });
   },
 
   login: async (req, res, next) => {
     let { email, password } = req.body;
-    console.log(email, password);
 
     if (!email || !password) {
       return res.status(404).json({
@@ -58,41 +64,123 @@ const AuthController = {
       });
     }
 
-    let data = await getUserByEmail(email);
-    console.log(data.rows[0]);
+    let dataUser = await getUserByEmail(email);
 
-    if (!data.rows[0]) {
+    if (!dataUser.rows[0]) {
       return res
         .status(404)
         .json({ status: 404, message: "Email is not yet registered" });
     }
 
-    let users = data.rows[0];
-    console.log("users.password");
-    console.log(users.password);
-    let verify = await argon2.verify(users.password, password);
+    let data = dataUser.rows[0];
+
+    let verify = await argon2.verify(data.password, password);
     if (!verify) {
       return res.status(404).json({ status: 404, message: "Invalid password" });
     }
-    delete users.password;
-    let token = GenerateToken(users);
-    users.token = token;
+    delete data.password;
+    let token = GenerateToken(data);
+    data.token = token;
 
     res
       .status(200)
-      .json({ status: 200, message: "get data profile success", users });
+      .json({ status: 200, message: "get data profile success", data });
+  },
+
+  putData: async (req, res, next) => {
+    const { id } = req.params;
+    const { name, email, password, photo } = req.body;
+
+    if (!id || id <= 0 || isNaN(id)) {
+      return res.status(404).json({ message: "wrong input id" });
+    }
+
+    let dataUsersId = await getUsersById(parseInt(id));
+
+    if (!dataUsersId.rows[0]) {
+      return res.status(200).json({
+        status: 200,
+        message: "get data user data not found",
+        data: [],
+      });
+    }
+
+    let users_id = req.payload.id;
+
+    if (users_id != dataUsersId.rows[0].id) {
+      return res.status(404).json({ message: "not your profile" });
+    }
+
+    let newPassword
+    if (password) {
+      newPassword = await argon2.hash(password)
+    }
+
+    if (!req.file) {
+      let data = {
+        name: name || dataUsersId.rows[0].name,
+        email: email || dataUsersId.rows[0].email,
+        password: newPassword || dataUsersId.rows[0].password,
+        photo: dataUsersId.rows[0].photo,
+      };
+
+      let updateUsersId = await putUsers(parseInt(id), data);
+      console.log(updateUsersId);
+      let dataAfter = await getUsersById(parseInt(id));
+
+      delete dataUsersId.rows[0].password
+      delete dataAfter.rows[0].password
+
+      let token = GenerateToken(data);
+      data.token = token;
+
+      return res
+        .status(200)
+        .json({
+          status: 200,
+          message: "update data user success",
+          dataBefore: dataUsersId.rows,
+          data: dataAfter.rows,
+        });
+    } else {
+      if (!req.isFileValid) {
+        return res.status(404).json({ message: req.isFileValidMessage });
+      }
+
+      const ImageCloud = await cloudinary.uploader.upload(req.file.path, {
+        folder: "be-project",
+      });
+
+      if (!ImageCloud) {
+        return res.status(404).json({ message: "upload photo fail" });
+      }
+      let data = {
+        name: name || dataUsersId.rows[0].name,
+        email: email || dataUsersId.rows[0].email,
+        password: newPassword || dataUsersId.rows[0].password,
+        photo: ImageCloud.secure_url,
+      };
+
+      let updateUsersId = await putUsers(parseInt(id), data);
+      console.log(updateUsersId);
+      let dataAfter = await getUsersById(parseInt(id));
+
+      delete dataUsersId.rows[0].password
+      delete dataAfter.rows[0].password
+
+      let token = GenerateToken(data);
+      data.token = token;
+
+      return res
+        .status(200)
+        .json({
+          status: 200,
+          message: "update data user success",
+          dataBefore: dataUsersId.rows,
+          data: dataAfter.rows,
+        });
+    }
   },
 };
 
 module.exports = AuthController;
-
-// try {
-//   const hash = await argon2.hash(password);
-//   if (hash) {
-//     return res
-//       .status(200)
-//       .json({ status: 200, message: "hash user berhasil", hash:hash,password:password });
-//   }
-// } catch (err) {
-//   return res.status(404).json({ status: 404, message: "hash user gagal",err });
-// }

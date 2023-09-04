@@ -29,23 +29,6 @@ const getUsersById = async (id) => {
   });
 };
 
-const putUsers = async (id, data) => {
-  const { name, email, password, photo } = data;
-  console.log("model putUsers");
-  return new Promise((resolve, reject) =>
-    pg.query(
-      `UPDATE users SET name='${name}', email='${email}', password='${password}', photo='${photo}' WHERE id=${id}`,
-      (err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      }
-    )
-  );
-};
-
 const deleteUsersById = (id) => {
   return new Promise((resolve, reject) => {
     pg.query(`DELETE FROM users WHERE id = ${id}`, (err, result) => {
@@ -61,6 +44,5 @@ const deleteUsersById = (id) => {
 module.exports = {
   getUsers,
   getUsersById,
-  putUsers,
   deleteUsersById,
 };

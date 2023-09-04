@@ -14,8 +14,7 @@ const cloudinary = require("../config/photo");
 const recipeController = {
   getData: async (req, res, next) => {
     let dataRecipe = await getRecipe();
-    console.log("data Recipe");
-    console.log(dataRecipe);
+
     if (!dataRecipe.rows[0]) {
       return res.status(200).json({
         status: 200,
@@ -33,14 +32,12 @@ const recipeController = {
   },
   getDataById: async (req, res, next) => {
     const { id } = req.params;
-    // let numberId = parseInt(req.params.id)
-    // console.log(numberId)
+
     if (isNaN(id) || id < 0 || !id) {
       return res.status(404).json({ message: "wrong input id" });
     }
     let dataRecipeId = await getRecipeById(parseInt(id));
-    console.log("dataRecipeId");
-    console.log(dataRecipeId);
+
     if (!dataRecipeId.rows[0]) {
       return res.status(200).json({
         status: 200,
@@ -67,7 +64,7 @@ const recipeController = {
       limit: limit || 3,
       offset: (page - 1) * limit || 0,
     };
-    console.log(data);
+
     let dataSearch = await getRecipeSearchSortPagination(data);
     if (!dataSearch.rows[0]) {
       return res.status(200).json({
@@ -91,19 +88,6 @@ const recipeController = {
       category_id,
       recipe_image,
     } = req.body;
-    console.log("post file");
-    console.log(req.file);
-
-    console.log(req.body);
-
-    console.log("post data");
-
-    console.log(
-      recipe_name,
-      recipe_ingredients,
-      category_id,
-      recipe_image
-    );
 
     if (!req.isFileValid) {
       return res.status(404).json({ message: req.isFileValidMessage });
@@ -116,14 +100,8 @@ const recipeController = {
     if (!ImageCloud) {
       return res.status(404).json({ message: "upload photo fail" });
     }
-    console.log(ImageCloud);
-
-
-
 
     let users_id = req.payload.id;
-    console.log("payload");
-    console.log(req.payload);
 
     if (
       !recipe_name ||
@@ -136,7 +114,7 @@ const recipeController = {
       });
     }
 
-    let data = {
+    let dataRecipe = {
       recipe_name,
       recipe_ingredients,
       category_id,
@@ -144,11 +122,7 @@ const recipeController = {
       recipe_image: ImageCloud.secure_url,
     };
 
-    console.log("data");
-    console.log(data);
-
-    let result = await postRecipe(data);
-    console.log(result);
+    let data = await postRecipe(dataRecipe);
 
     return res
       .status(200)
@@ -163,8 +137,6 @@ const recipeController = {
       category_id,
       recipe_image,
     } = req.body;
-    console.log("req.body")
-    console.log(req.body)
 
     if (!id || id <= 0 || isNaN(id)) {
       return res.status(404).json({ message: "wrong input id" });
@@ -174,15 +146,10 @@ const recipeController = {
 
     let users_id = req.payload.id;
 
-    console.log("id data");
-    console.log(users_id);
-    console.log(dataRecipeId.rows[0].users_id);
     if (users_id != dataRecipeId.rows[0].users_id) {
       return res.status(404).json({ message: "not your recipe" });
     }
 
-    console.log("dataRecipeId");
-    console.log(dataRecipeId);
     if (!dataRecipeId.rows[0]) {
       return res.status(200).json({
         status: 200,
@@ -202,10 +169,7 @@ const recipeController = {
     if (!ImageCloud) {
       return res.status(404).json({ message: "upload photo fail" });
     }
-    console.log(ImageCloud);
 
-    console.log("put data");
-    console.log(dataRecipeId.rows[0]);
     let data = {
       recipe_name: recipe_name || dataRecipeId.rows[0].recipe_name,
       recipe_ingredients:
@@ -217,7 +181,6 @@ const recipeController = {
 
     let result = await putRecipe(parseInt(id), data);
     let after = await getRecipeById(parseInt(id))
-    console.log(result);
     return res
       .status(200)
       .json({ status: 200, message: "update data recipe success", data, after: after.rows[0] });
@@ -240,17 +203,12 @@ const recipeController = {
       });
     }
 
-    console.log("id data");
-    console.log(users_id);
-    console.log(dataRecipeId.rows[0]);
     if (users_id != dataRecipeId.rows[0].users_id) {
       return res.status(404).json({ message: "not your recipe" });
     }
 
     let deleteRecipeId = await deleteRecipeById(parseInt(id));
-    console.log("deleteRecipeId");
-    console.log(deleteRecipeId);
-    console.log(dataRecipeId.rows);
+
     if (deleteRecipeId) {
       res.status(200).json({
         status: 200,
@@ -263,14 +221,11 @@ const recipeController = {
   //TODO: KHUSUS MOBILE
   getDataByUserId: async (req, res, next) => {
     const { id } = req.params;
-    // let numberId = parseInt(req.params.id)
-    // console.log(numberId)
+
     if (isNaN(id) || id < 0 || !id) {
       return res.status(404).json({ message: "wrong input id" });
     }
     let dataRecipeId = await getRecipeByUserId(parseInt(id));
-    console.log("dataRecipeId");
-    console.log(dataRecipeId);
     if (!dataRecipeId.rows[0]) {
       return res.status(200).json({
         status: 200,
