@@ -47,6 +47,19 @@ const getRecipeSearchSortPagination = async (data) => {
   });
 };
 
+const getCount = async () => {
+  console.log("model getHomeCount")
+  return new Promise((resolve,reject)=>
+      pg.query(`SELECT COUNT(*) FROM recipe`,(err,result)=>{
+          if(!err){
+              resolve(result)
+          } else{
+              reject(err)
+          }
+      })
+  )
+}
+
 const postRecipe = async (data) => {
   const {
     recipe_name,
@@ -124,6 +137,7 @@ module.exports = {
   getRecipe,
   getRecipeById,
   getRecipeSearchSortPagination,
+  getCount,
   postRecipe,
   putRecipe,
   deleteRecipeById,

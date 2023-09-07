@@ -378,3 +378,6 @@ CREATE TABLE
     );
 
 ALTER TABLE users ADD COLUMN photo VARCHAR;
+
+ALTER TABLE category
+ALTER COLUMN category_image SET NOT NULL;
