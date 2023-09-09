@@ -55,17 +55,17 @@ const recipeController = {
     }
   },
   getDataSearch: async (req, res, next) => {
-    const { page, order, sort, search, searchBy, limit, offset } = req.query;
+    const { order, sort, search, searchBy, limit, offset } = req.query;
     let limiter = limit || 5;
-    data = {
-      page: page || 1,
-      order: order || "recipe.id",
-      sort: sort || "ASC",
-      search: search || "",
-      searchBy: searchBy || "recipe_name",
-      limit: limit || 3,
-      offset: (page - 1) * limiter || 0,
-    };
+    let page = req.query.page || 1,
+      data = {
+        order: order || "recipe.id",
+        sort: sort || "ASC",
+        search: search || "",
+        searchBy: searchBy || "recipe_name",
+        limit: limit || 3,
+        offset: (page - 1) * limiter || 0,
+      };
 
     let dataSearch = await getRecipeSearchSortPagination(data);
     if (!dataSearch.rows[0]) {
