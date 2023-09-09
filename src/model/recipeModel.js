@@ -47,10 +47,11 @@ const getRecipeSearchSortPagination = async (data) => {
   });
 };
 
-const getCount = async () => {
+const getCount = async (data) => {
+  const { search, searchBy} = data;
   console.log("model getHomeCount")
   return new Promise((resolve,reject)=>
-      pg.query(`SELECT COUNT(*) FROM recipe`,(err,result)=>{
+      pg.query(`SELECT COUNT(*) FROM recipe WHERE ${searchBy} ILIKE '%${search}%'`,(err,result)=>{
           if(!err){
               resolve(result)
           } else{
