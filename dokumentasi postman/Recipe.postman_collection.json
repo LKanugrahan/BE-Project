@@ -22,13 +22,12 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{url}}/recipe/",
+							"raw": "{{url}}/recipe",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"recipe",
-								""
+								"recipe"
 							]
 						}
 					},
@@ -72,7 +71,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/recipe/detail?sort=asc&page=2&limit=3",
+							"raw": "{{url}}/recipe/detail?sort=asc&limit=1",
 							"host": [
 								"{{url}}"
 							],
@@ -97,11 +96,12 @@
 								},
 								{
 									"key": "page",
-									"value": "2"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "limit",
-									"value": "3"
+									"value": "1"
 								},
 								{
 									"key": "order",
@@ -116,6 +116,16 @@
 				{
 					"name": "POST RECIPE",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjgsIm5hbWUiOiJsYW5nZ2VuZyIsImVtYWlsIjoibGthbnVncmFoYW5AZ21haWwuY29tIiwiY3JlYXRlZF9hdCI6IjIwMjMtMDktMDRUMjM6MTY6MzEuNTQwWiIsInBob3RvIjoiaHR0cHM6Ly9yZXMuY2xvdWRpbmFyeS5jb20vZGFmamI5dm43L2ltYWdlL3VwbG9hZC92MTY5MzYzOTY1OC9wcm9maWxlX2NtcWRyeC5wbmciLCJpYXQiOjE2OTM5NTY4NDB9.9U35RXglAyF-vobh6ku3uJFB_pGrIVWYGIx8hOxX2hs",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -123,13 +133,14 @@
 							"formdata": [
 								{
 									"key": "recipe_name",
-									"value": "ayam goreng",
+									"value": "ayam goreng4",
 									"type": "text"
 								},
 								{
 									"key": "recipe_desc",
 									"value": "ayam digoreng",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "recipe_ingredients",
@@ -144,19 +155,23 @@
 								{
 									"key": "recipe_image",
 									"type": "file",
-									"src": "/C:/Users/Asus/Downloads/React.png"
+									"src": "/C:/Users/Asus/Downloads/kucing lucu.jpg"
 								},
 								{
 									"key": "users_id",
 									"value": "1",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/recipe/",
+							"raw": "https://gray-giant-salamander.cyclic.app/recipe/",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"gray-giant-salamander",
+								"cyclic",
+								"app"
 							],
 							"path": [
 								"recipe",
@@ -235,6 +250,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GET RECIPE USER ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recipe/mobile/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipe",
+								"mobile",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -264,13 +298,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/category/1",
+							"raw": "{{url}}/category/2",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"category",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -279,7 +313,7 @@
 			]
 		},
 		{
-			"name": "USERS",
+			"name": "USERS FOR ROLE ADMIN",
 			"item": [
 				{
 					"name": "GET USERS",
@@ -304,51 +338,41 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/users/22",
+							"raw": "{{url}}/users/31",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"users",
-								"22"
+								"31"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "UPDATE USER",
+					"name": "GET USER ID",
 					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "name",
-									"value": "langgeng",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "lkanugrahan@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "qwerty",
-									"type": "text"
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsIm5hbWUiOiJsYW5nIiwiZW1haWwiOiJrYW51Z3JhaGFuQGdtYWlsLmNvbSIsImNyZWF0ZWRfYXQiOiIyMDIzLTA5LTAzVDE1OjE0OjM0LjI1OVoiLCJwaG90byI6Imh0dHBzOi8vcmVzLmNsb3VkaW5hcnkuY29tL2RhZmpiOXZuNy9pbWFnZS91cGxvYWQvdjE2OTM2Mzk2NTgvcHJvZmlsZV9jbXFkcngucG5nIiwiaWF0IjoxNjkzNzMyNzg1fQ.Apa55-GlKN056hVFfNmc1QmaTzKF3E8Bq9OQTy0oKCI",
+									"type": "string"
 								}
 							]
 						},
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{url}}/users/1",
+							"raw": "{{url}}/users/30",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"users",
-								"1"
+								"30"
 							]
 						}
 					},
@@ -369,7 +393,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "john.smith@example.com",
+									"value": "kanugrahan@gmail.com",
 									"type": "text"
 								},
 								{
@@ -379,7 +403,7 @@
 								},
 								{
 									"key": "email",
-									"value": "guest2@example.com",
+									"value": "guest8@example.com",
 									"type": "text",
 									"disabled": true
 								},
@@ -392,9 +416,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/auth/login",
+							"raw": "https://gray-giant-salamander.cyclic.app/auth/login",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"gray-giant-salamander",
+								"cyclic",
+								"app"
 							],
 							"path": [
 								"auth",
@@ -414,7 +441,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "guest7@example.com",
+									"value": "guest8@example.comm",
 									"type": "text"
 								},
 								{
@@ -449,6 +476,64 @@
 							"path": [
 								"auth",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE USER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzAsIm5hbWUiOiJsYW5nZ2VuZyIsImVtYWlsIjoiZ3Vlc3Q4QGV4YW1wbGUuY29tIiwicGhvdG8iOiJodHRwczovL3Jlcy5jbG91ZGluYXJ5LmNvbS9kYWZqYjl2bjcvaW1hZ2UvdXBsb2FkL3YxNjkzODUzMDg5L2JlLXByb2plY3QvYm9nYm9oYWdrN3FzOGlucW11dHgucG5nIiwiaWF0IjoxNjkzODUzMDg4fQ.se-ZJ4AOuNr79gIaR5e_ybx56sx4ffNChU94RvW-yQM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "langgeng",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "lkanugrahan@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "qwerty",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/Asus/Downloads/profile.png",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://gray-giant-salamander.cyclic.app/auth/30",
+							"protocol": "https",
+							"host": [
+								"gray-giant-salamander",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"auth",
+								"30"
 							]
 						}
 					},
@@ -525,7 +610,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{token}}",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsIm5hbWUiOiJMYW5nZ2VuZyBLYW51Z3JhaGFuIiwiZW1haWwiOiJrYW51Z3JhaGFuQGdtYWlsLmNvbSIsImNyZWF0ZWRfYXQiOiIyMDIzLTA5LTAzVDE1OjE0OjM0LjI1OVoiLCJwaG90byI6Imh0dHBzOi8vcmVzLmNsb3VkaW5hcnkuY29tL2RhZmpiOXZuNy9pbWFnZS91cGxvYWQvdjE2OTM5MTA2NTUvYmUtcHJvamVjdC9wOHVkdGtjemlrdHR2MWphcXE1Yy5qcGciLCJpYXQiOjE2OTQxMTY3ODB9.xSoh92CsSd_UxyGiSSwATFVdivUW9vl3g7M0K7ztK6Y",
 									"type": "string"
 								}
 							]
@@ -558,18 +643,19 @@
 								{
 									"key": "recipe_image",
 									"type": "file",
-									"src": "/C:/Users/Asus/Downloads/Gravity.jpg"
+									"src": "/C:/Users/Asus/Downloads/kucing lucu.jpg",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/recipe/60",
+							"raw": "{{url}}/recipe/155",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"recipe",
-								"60"
+								"155"
 							]
 						}
 					},
