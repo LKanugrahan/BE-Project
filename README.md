@@ -72,14 +72,17 @@ Install Mama Recipe Mobile API with npm :
 
 - Setup .env
 ```
+For Database
 DB_HOST =
 DB_USER =
 DB_PASSWORD =
 DB_NAME =
 DB_PORT =
 
+For JSON Web Token
 JWT_TOKEN =
 
+For cloudinary
 CLOUD_NAME =
 API_KEY =
 API_SECRET =
