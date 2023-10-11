@@ -26,6 +26,7 @@
 * [About the Project](#about-the-project)
 * [Built With](#built-with)
 * [Installation](#installation)
+* [Contributing](#contributing)
 * [Related Project](#related-project)
 * [Contact](#contact)
 
