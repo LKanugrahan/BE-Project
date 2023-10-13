@@ -53,19 +53,19 @@ This API was built with some technologies below:
 
 Install Mama Recipe API with npm :
 
-- Clone the Repo
+- Clone the repository
 
 ```
   git clone https://github.com/LKanugrahan/mamaRecipeAPI.git
 ```
 
-- Go To Folder Repo
+- Go to folder repository
 
 ```
   cd mamaRecipeAPI
 ```
 
-- Install Module
+- Install dependencies
 
 ```
   npm install
@@ -89,7 +89,11 @@ API_KEY =
 API_SECRET =
 ```
 
-- Type  ```npm run start``` To Start Production
+- Run Program
+  Type in repository path
+```
+node index --watch
+```
 
 ## Contributing
 
