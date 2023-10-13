@@ -33,7 +33,7 @@
 ## About The Project
 
 <p align="justify">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Mama Recipe API project is a web-based application aimed at providing cooking recipes accessible to users through an API interface. This application leverages Node.js, Express.js, and the Relational Database Management System (RDBMS) PostgreSQL to manage cooking recipe data. This project is suitable for those seeking culinary inspiration, wishing to share recipes, or simply looking for cooking guidance.</p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mama Recipe API is a backend project that functions to perform CRUD operations. This application leverages Node.js, Express.js, and the Relational Database Management System (RDBMS) PostgreSQL to manage cooking recipe data. This project is suitable for those seeking culinary inspiration, wishing to share recipes, or simply looking for cooking guidance.</p>
 
 ## Built With
 
