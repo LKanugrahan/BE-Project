@@ -51,7 +51,7 @@ This API was built with some technologies below:
 
 ## Installation
 
-Install Mama Recipe Mobile API with npm :
+Install Mama Recipe API with npm :
 
 - Clone the Repo
 
